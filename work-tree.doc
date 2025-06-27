@@ -1,0 +1,31 @@
+```
+└── 📁Tauros-server
+    └── 📁.vscode
+        ├── settings.json
+    └── 📁server
+        └── 📁__test__
+            ├── example.spec.ts
+        └── 📁coverage
+            └── 📁lcov-report
+                ├── base.css
+                ├── block-navigation.js
+                ├── favicon.png
+                ├── index.html
+                ├── prettify.css
+                ├── prettify.js
+                ├── sort-arrow-sprite.png
+                ├── sorter.js
+            ├── clover.xml
+            ├── coverage-final.json
+            ├── lcov.info
+        └── 📁src
+        ├── .env
+        ├── .gitignore
+        ├── eslint.config.mjs
+        ├── index.ts
+        ├── jest.config.ts
+        ├── package-lock.json
+        ├── package.json
+        ├── tsconfig.json
+    └── README.md
+```
