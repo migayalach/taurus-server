@@ -1,0 +1,27 @@
+{
+  "name": "taurus-server",
+  "version": "1.0.0",
+  "description": "This is the server for the Taurus project",
+  "keywords": [
+    "api",
+    "express",
+    "node",
+    "backend",
+    "taurus"
+  ],
+  "homepage": "https://github.com/migayalach/taurus-server#readme",
+  "bugs": {
+    "url": "https://github.com/migayalach/taurus-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/migayalach/taurus-server.git"
+  },
+  "license": "ISC",
+  "author": "Code-Review",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  }
+}
