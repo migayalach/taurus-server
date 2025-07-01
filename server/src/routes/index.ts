@@ -4,6 +4,7 @@
  */
 
 import express, { Response, Request } from "express";
+import UserRouter from "./UsersRouter";
 import HelloRouter from "./HelloRouter";
 import { LogInfo } from "../utils/logger";
 
@@ -22,5 +23,7 @@ rootRouter.get("/", (request: Request, response: Response) => {
 // Redirections to Routers & Controllers
 server.use("/", rootRouter); //http://localhost:3001/api/
 server.use("/hello", HelloRouter); //http://localhost:3001/api/hello --> Hello Router
+server.use("/users", UserRouter); //http://localhost:3001/api/users --> User Router
+
 // Add more routes to the app
 export default server;
