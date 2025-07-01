@@ -13,7 +13,7 @@ export class HelloController implements IHelloController {
    */
   @Get("/")
   public async getMessage(@Query() name?: string): Promise<BasicResponse> {
-    LogSuccess("[/api] Get Request");
+    LogSuccess("[/api/hello] Get Request");
     return {
       message: `Hello, ${name || "world"}.`,
     };
