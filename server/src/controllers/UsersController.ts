@@ -1,15 +1,24 @@
-import { Get, Query, Route, Tags } from "tsoa";
+import { Body, Delete, Get, Post, Put, Query, Route, Tags } from "tsoa";
 import { IUserController } from "../interfaces";
-import { LogSuccess, LogError } from "../utils/logger";
+import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
 // ORM - User Collection
-import { getAllUsers, getUserByID } from "../domain/orm/user.orm";
+import {
+  getAllUsers,
+  getUserByID,
+  deleteUserByID,
+  createUser,
+  updateUserByID,
+} from "../domain/orm/user.orm";
+import { error } from "console";
 
 @Route("/api/users")
 @Tags("UserController")
 export class UserController implements IUserController {
   /**
    * Endpoint to retreive User in the collection 'Users' of DB
+   * @params {string} id Id for user to retreive (optional)
+   * @return All user o user found by ID
    */
   @Get("/")
   public async getUsers(@Query() id?: string): Promise<any> {
@@ -22,6 +31,83 @@ export class UserController implements IUserController {
       response = await getAllUsers();
     }
 
+    return response;
+  }
+
+  /**
+   * Endpoint to delete User in the collection 'Users' of DB
+   * @params {string} id Id for user to delete (optional)
+   * @return message informing if detention was correct
+   */
+  @Delete("/")
+  public async deleteUser(@Query() id?: string): Promise<any> {
+    let response: any = "";
+    if (id) {
+      LogSuccess(`[/api/users] Delete User By ID: ${id}`);
+      await deleteUserByID(id)
+        .then((info) => {
+          response = {
+            message: `User with id ${id} deleted successfully`,
+          };
+        })
+        .catch((error) => {
+          LogError(`[api/users] Delete User had an error: ${error}`);
+        });
+    } else {
+      LogWarning("[/api/users] Delete User Request WITHOUT ID");
+      response = {
+        message: `Please, provide an ID to remove from database`,
+      };
+    }
+    return response;
+  }
+
+  /**
+   * Endpoint to created User in the collection 'Users' of DB
+   * @params {string} id Id for user to retreive (optional)
+   * @return All user o user found by ID
+   */
+  @Post("/")
+  public async createUser(user: any): Promise<any> {
+    let response: any = "";
+    await createUser(user)
+      .then((info) => {
+        LogSuccess(`[/api/users] Create User: ${user}`);
+        response = {
+          message: `User created successfully; ${user.name}`,
+        };
+      })
+      .catch((error) => {
+        LogError(`[api/users] Created User had an error: ${error}`);
+      });
+    return response;
+  }
+
+  /**
+   * Endpoint to update User in the collection 'Users' of DB
+   * @params {string} id Id for user to retreive
+   * @return All user o user found by ID
+   */
+  @Put("/")
+  public async updateUser(id: string, user: any): Promise<any> {
+    let response: any = "";
+    if (id) {
+      LogSuccess(`[/api/users] Update User By ID: ${id}`);
+      await updateUserByID(id, user)
+        .then((info) => {
+          response = {
+            message: `User with id ${id} updated successfully`,
+          };
+        })
+        .catch((error) => {
+          LogError(`[api/users] Update User had an error: ${error}`);
+        });
+    } else {
+      LogWarning("[/api/users] Update User Request WITHOUT ID");
+      response = {
+        message: `Please, provide an ID to update an existing user`,
+      };
+    }
     return response;
   }
 }
