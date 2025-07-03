@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Post, Put, Query, Route, Tags } from "tsoa";
+import { Delete, Get, Post, Put, Query, Route, Tags } from "tsoa";
 import { IUserController } from "../interfaces";
 import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
@@ -10,7 +10,6 @@ import {
   createUser,
   updateUserByID,
 } from "../domain/orm/user.orm";
-import { error } from "console";
 
 @Route("/api/users")
 @Tags("UserController")
@@ -47,6 +46,7 @@ export class UserController implements IUserController {
       await deleteUserByID(id)
         .then((info) => {
           response = {
+            status: 204,
             message: `User with id ${id} deleted successfully`,
           };
         })
@@ -56,6 +56,7 @@ export class UserController implements IUserController {
     } else {
       LogWarning("[/api/users] Delete User Request WITHOUT ID");
       response = {
+        status: 400,
         message: `Please, provide an ID to remove from database`,
       };
     }
@@ -96,6 +97,7 @@ export class UserController implements IUserController {
       await updateUserByID(id, user)
         .then((info) => {
           response = {
+            status: 200,
             message: `User with id ${id} updated successfully`,
           };
         })
@@ -105,6 +107,7 @@ export class UserController implements IUserController {
     } else {
       LogWarning("[/api/users] Update User Request WITHOUT ID");
       response = {
+        status: 400,
         message: `Please, provide an ID to update an existing user`,
       };
     }
