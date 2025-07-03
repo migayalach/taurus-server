@@ -30,7 +30,7 @@ userRouter
     // Obtain Response
     const results: any = await controller.deleteUser(id);
     // Send to the client the response
-    response.send(results);
+    response.status(results.status).send(results);
   })
   // POST
   .post(async (request: Request, response: Response) => {
@@ -48,7 +48,7 @@ userRouter
     // Obtain Response
     const results: any = await controller.createUser(user);
     // Send to the client the response
-    response.send(results);
+    response.status(201).send(results);
   })
   .put(async (request: Request, response: Response) => {
     // Obtain a Query Param (ID)
@@ -67,8 +67,15 @@ userRouter
     // Obtain Response
     const results: any = await controller.updateUser(id, user);
     // Send to the client the response
-    response.send(results);
+    response.status(results.status).send(results);
   });
 
-// Export User Router
+// Export Users Router
 export default userRouter;
+
+/**
+ * Get Documents => 200 OK
+ * Creation Documents => 201 OK
+ * Deletion of Documents => 200 (Entity) / 204 (No return)
+ * Update of Documents => 200 (Entity) / 204 (No return)
+ */
