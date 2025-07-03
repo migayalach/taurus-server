@@ -26,7 +26,7 @@
   "main": "index.js",
   "scripts": {
     "swagger": "tsoa spec",
-    "dev": "concurrently \"npx tsc --watch \" \"npm run swagger\" \"nodemon -q dist/index.js\"",
+    "dev": "concurrently \"npx tsc --watch \" \"nodemon -q dist/index.js\"",
     "test": "jest",
     "serve:coverage": "npm run test && cd coverage/lcov-report && npx serve",
     "build": "npx webpack --mode development",
@@ -34,10 +34,13 @@
     "build:prod": "npx webpack --mode production"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.6.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.1",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
@@ -46,9 +49,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.4",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
