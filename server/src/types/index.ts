@@ -12,3 +12,11 @@ export type ErrorResponse = {
   error: string;
   message: string;
 };
+
+/**
+ * Interface
+ */
+export type AuthResponse = {
+  message: string;
+  token: string;
+};
