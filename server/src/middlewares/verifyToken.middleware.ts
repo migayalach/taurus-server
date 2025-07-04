@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-
+import dotenv from "dotenv";
+dotenv.config();
+const secret = process.env.SECRETKEY || "MYSECRETKEY";
 /**
  *
  * @param {Request} request Original request previous middleware of verification JWT
@@ -16,24 +18,22 @@ export const verifyToken = (
 ) => {
   // Check HEADER from Request for 'x-access-token'
   const token: any = request.headers["x-access-token"];
-  // Verify if jwt is present
+  // Verify if jwt is present 
   if (!token) {
-    return response.status(403).send({
+    response.status(403).send({
       authenticationError: "Missing JWT in request",
       message: "Not authenticacion to consume this endpoint",
     });
   }
-  // Verify the token obtained
-  jwt.verify(token, "", (error: any, decoded: any) => {
+  // Verify the token obtained. We pass the secret
+  jwt.verify(token, secret, (error: any, decoded: any) => {
     if (error) {
-      return response.status(500).send({
+      response.status(500).send({
         authenticationError: "JWT verification failed",
         message: "Failed to verify JWT token in request",
       });
     }
   });
-
-  // Pass something to next request (id of user || other information)
 
   // Execute Next Function --> Protected Routes will be execute
   next();
