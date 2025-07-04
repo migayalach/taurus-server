@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 import { LogInfo } from "../utils/logger";
 import { UserController } from "../controllers/UsersController";
-
+// Body Parser to read BODY from requests
+import bodyParser from "body-parser";
+const jsonParser = bodyParser.json();
+// Middleware
+import { verifyToken } from "../middlewares/verifyToken.middleware";
 // Router from express
 const userRouter = express.Router();
 
@@ -9,7 +13,7 @@ const userRouter = express.Router();
 userRouter
   .route("/")
   //GET:
-  .get(async (request: Request, response: Response) => {
+  .get(verifyToken, async (request: Request, response: Response) => {
     // Obtain a Query Param (ID)
     const id: any = request?.query?.id;
     LogInfo(`Query Param: ${id}`);
@@ -21,7 +25,7 @@ userRouter
     response.send(results);
   })
   // DELETE:
-  .delete(async (request: Request, response: Response) => {
+  .delete(verifyToken, async (request: Request, response: Response) => {
     // Obtain a Query Param (ID)
     const id: any = request?.query?.id;
     LogInfo(`Query Param: ${id}`);
@@ -32,25 +36,7 @@ userRouter
     // Send to the client the response
     response.status(results.status).send(results);
   })
-  // POST
-  .post(async (request: Request, response: Response) => {
-    // Controller Instance to excute method
-    const controller: UserController = new UserController();
-    const name: any = request?.query?.name;
-    const email: any = request?.query?.email;
-    const age: any = request?.query?.age;
-
-    const user = {
-      name: name || "default",
-      email: email || "default email",
-      age: age || 18,
-    };
-    // Obtain Response
-    const results: any = await controller.createUser(user);
-    // Send to the client the response
-    response.status(201).send(results);
-  })
-  .put(async (request: Request, response: Response) => {
+  .put(verifyToken, async (request: Request, response: Response) => {
     // Obtain a Query Param (ID)
     const id: any = request?.query?.id;
     const name: any = request?.query?.name;
