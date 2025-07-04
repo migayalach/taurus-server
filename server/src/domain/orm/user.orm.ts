@@ -1,9 +1,15 @@
 import { userEntity } from "../entities/user.entity";
-import { LogError, LogSuccess } from "../../utils/logger";
+import { LogError } from "../../utils/logger";
 import { IUser } from "../../interfaces/IUser.interface";
 import { IAuth } from "../../interfaces/IAuth.interface";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+// Configuration of enviromment variables
+dotenv.config();
+// Obtain Secrect key to generate JWT
+const secret = process.env.SECRETKEY || "MYSECRETKEY";
+
 // CRUD PETICIONS
 /**
  * Nethod to obtain all Users from Collection 'Users' in Mongo Server
@@ -78,26 +84,38 @@ export const registerUser = async (user: IUser): Promise<any | undefined> => {
 export const loginUser = async (auth: IAuth): Promise<any | undefined> => {
   try {
     const userModel = userEntity();
-    // Find User by ID
-    userModel.findOne({ email: auth.email }, (error: any, user: IUser) => {
-      if (error) {
-        // TODO return ERROR --> ERROR while searching (500)
-      }
-      if (!user) {
-        // TODO return ERROR --> ERROR USER NOT FOUND (404)
-      }
+    let userFound: IUser | undefined = undefined;
+    let token = undefined;
 
-      // Use Bcrypt to Compare Passwords
-      const validPassword = bcrypt.compareSync(auth.password, user.password);
-      if (!validPassword) {
-        // TODO ---> NOT AUTHORISED (401)
-      }
-      // Create JWT
-      const token = jwt.sign({ email: user.email }, "MySecret", {
-        expiresIn: "2h",
+    // Check if user exist by Unique Email
+    await userModel
+      .findOne({ email: auth.email })
+      .then((user: IUser) => {
+        userFound = user;
+      })
+      .catch((error) => {
+        console.error(`[ERROR Authentication in ORM]: User Not Found`);
+        throw new Error(
+          `[ERROR Authentication in ORM]: User Not Found: ${error}`
+        );
       });
-      return token;
+    // Check if Password is Valid (Compare wuth bcrypt)
+    const validPassword = bcrypt.compareSync(
+      auth.password,
+      userFound!.password
+    );
+
+    if (!validPassword) {
+      // TODO ---> NOT AUTHORISED (401)
+      console.error(`[ERROR Authentication in ORM]: Password Not Valid`);
+      throw new Error(`[ERROR Authentication in ORM]: Password Not Valid`);
+    }
+
+    // Generate our JWT
+    token = jwt.sign({ email: userFound!.email }, secret, {
+      expiresIn: "2h",
     });
+    return { user: userFound, token };
   } catch (error) {
     LogError(`[ORM ERROR]: Login User: ${error}`);
   }
@@ -109,3 +127,24 @@ export const logoutUser = async (): Promise<any | undefined> => {
 };
 
 // \"npm run swagger\"
+
+// // Find User by ID
+// userModel.findOne({ email: auth.email }, (error: any, user: IUser) => {
+//   if (error) {
+//     // TODO return ERROR --> ERROR while searching (500)
+//   }
+//   if (!user) {
+//     // TODO return ERROR --> ERROR USER NOT FOUND (404)
+//   }
+
+//   // Use Bcrypt to Compare Passwords
+//   const validPassword = bcrypt.compareSync(auth.password, user.password);
+//   if (!validPassword) {
+//     // TODO ---> NOT AUTHORISED (401)
+//   }
+//   // Create JWT
+//   const token = jwt.sign({ email: user.email }, "MySecret", {
+//     expiresIn: "2h",
+//   });
+//   return token;
+// });
