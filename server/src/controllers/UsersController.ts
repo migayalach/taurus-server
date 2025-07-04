@@ -1,4 +1,4 @@
-import { Delete, Get, Post, Put, Query, Route, Tags } from "tsoa";
+import { Delete, Get, Put, Query, Route, Tags } from "tsoa";
 import { IUserController } from "../interfaces";
 import { LogSuccess, LogError, LogWarning } from "../utils/logger";
 
@@ -7,7 +7,6 @@ import {
   getAllUsers,
   getUserByID,
   deleteUserByID,
-  createUser,
   updateUserByID,
 } from "../domain/orm/user.orm";
 
@@ -60,27 +59,6 @@ export class UserController implements IUserController {
         message: `Please, provide an ID to remove from database`,
       };
     }
-    return response;
-  }
-
-  /**
-   * Endpoint to created User in the collection 'Users' of DB
-   * @params {string} id Id for user to retreive (optional)
-   * @return All user o user found by ID
-   */
-  @Post("/")
-  public async createUser(user: any): Promise<any> {
-    let response: any = "";
-    await createUser(user)
-      .then((info) => {
-        LogSuccess(`[/api/users] Create User: ${user}`);
-        response = {
-          message: `User created successfully; ${user.name}`,
-        };
-      })
-      .catch((error) => {
-        LogError(`[api/users] Created User had an error: ${error}`);
-      });
     return response;
   }
 
