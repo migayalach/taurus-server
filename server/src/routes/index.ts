@@ -6,7 +6,7 @@
 import express, { Response, Request } from "express";
 import UserRouter from "./UsersRouter";
 import HelloRouter from "./HelloRouter";
-import AuthRouter from "./AuthRoute";
+import AuthRouter from "./AuthRouter";
 import { LogInfo } from "../utils/logger";
 
 // Server instance
@@ -23,8 +23,8 @@ rootRouter.get("/", (request: Request, response: Response) => {
 
 // Redirections to Routers & Controllers
 server.use("/", rootRouter); //http://localhost:3001/api/
-server.use("/hello", HelloRouter); //http://localhost:3001/api/hello --> Hello Router
-server.use("/users", UserRouter); //http://localhost:3001/api/users --> User Router
-server.use("/auth", AuthRouter); //http://localhost:3001/api/auth --> Auth Router
+server.use("/hello", HelloRouter); //http://localhost:3001/api/hello --> HelloRouter
+server.use("/users", UserRouter); //http://localhost:3001/api/users --> UserRouter
+server.use("/auth", AuthRouter); //http://localhost:3001/api/auth --> AuthRouter
 // Add more routes to the app
 export default server;
