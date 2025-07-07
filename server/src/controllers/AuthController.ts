@@ -83,8 +83,6 @@ export class AuthController implements IAuthController {
     if (id) {
       LogSuccess(`[/api/users] Get User Data by ID: ${id}`);
       response = await getUserByID(id);
-      // Remove the password
-      response.password = "fuck you!";
     }
 
     return response;
