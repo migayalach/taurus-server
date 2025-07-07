@@ -16,11 +16,14 @@ userRouter
   .get(verifyToken, async (request: Request, response: Response) => {
     // Obtain a Query Param (ID)
     const id: any = request?.query?.id;
+    // Pagination
+    const page: any = request?.query?.page || 1;
+    const limit: any = request?.query.limit || 10;
     LogInfo(`Query Param: ${id}`);
     // Controller Instance to excute method
     const controller: UserController = new UserController();
     // Obtain Response
-    const results: any = await controller.getUsers(id);
+    const results: any = await controller.getUsers(page, limit, id);
     // Send to the client the response
     response.send(results);
   })
