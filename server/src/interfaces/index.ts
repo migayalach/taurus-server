@@ -1,5 +1,6 @@
 import { BasicResponse } from "../types";
 import { IUser } from "./IUser.interface";
+import { IKata } from "./IKata.interface";
 
 export interface IHelloController {
   getMessage(name?: string): Promise<BasicResponse>;
@@ -21,4 +22,15 @@ export interface IAuthController {
   loginUser(auth: any): Promise<any>;
   // Login user out
   logoutUser(): Promise<any>;
+}
+
+export interface IKataController {
+  // Real all Katas from database || Get Kata By ID
+  getKatas(page: number, limit: number, id?: string): Promise<any>;
+  // Create New Kata
+  createKata(kata: IKata): Promise<any>;
+  // Delete Kata By ID
+  deleteKata(id?: string): Promise<any>;
+  // Update Kata
+  updateKata(id: string, kata: IKata): Promise<any>;
 }
