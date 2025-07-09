@@ -7,6 +7,7 @@ import express, { Response, Request } from "express";
 import UserRouter from "./UsersRouter";
 import HelloRouter from "./HelloRouter";
 import AuthRouter from "./AuthRouter";
+import KatasRouter from "./KataRouter";
 import { LogInfo } from "../utils/logger";
 
 // Server instance
@@ -26,5 +27,6 @@ server.use("/", rootRouter); //http://localhost:3001/api/
 server.use("/hello", HelloRouter); //http://localhost:3001/api/hello --> HelloRouter
 server.use("/users", UserRouter); //http://localhost:3001/api/users --> UserRouter
 server.use("/auth", AuthRouter); //http://localhost:3001/api/auth --> AuthRouter
+server.use("/katas", KatasRouter); //http://localhost:3001/api/katas --> KatasRouter
 // Add more routes to the app
 export default server;
