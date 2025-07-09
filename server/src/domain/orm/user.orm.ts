@@ -13,7 +13,7 @@ const secret = process.env.SECRETKEY || "MYSECRETKEY";
 
 // CRUD PETICIONS
 /**
- * Nethod to obtain all Users from Collection 'Users' in Mongo Server
+ * Method to obtain all Users from Collection 'Users' in Mongo Server
  */
 export const getAllUsers = async (
   page: number,
@@ -64,17 +64,6 @@ export const deleteUserByID = async (id: string): Promise<any | undefined> => {
     return await userModel.deleteOne({ _id: id });
   } catch (error) {
     LogError(`[ORM ERROR]: Deleting User By ID: ${error}`);
-  }
-};
-
-// - Create new User
-export const createUser = async (user: any): Promise<any | undefined> => {
-  try {
-    const userModel = userEntity();
-    // Create / Insert new User
-    return await userModel.create(user);
-  } catch (error) {
-    LogError(`[ORM ERROR]: Creating User: ${error}`);
   }
 };
 
