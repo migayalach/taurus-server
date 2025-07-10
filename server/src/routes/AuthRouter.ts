@@ -26,6 +26,7 @@ authRouter
         email,
         password: hashedPassword,
         age,
+        katas: [],
       };
       // Controller Instance to excute method
       const controller: AuthController = new AuthController();
