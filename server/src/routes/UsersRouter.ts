@@ -59,6 +59,24 @@ userRouter
     response.status(results.status).send(results);
   });
 
+// http://localhost:3001/api/users/katas?id=6862d0fd3babc5770a8f1652
+userRouter
+  .route("/katas")
+  .get(verifyToken, async (request: Request, response: Response) => {
+    // Obtain a Query Param (ID)
+    const id: any = request?.query?.id;
+    // Pagination
+    const page: any = request?.query?.page || 1;
+    const limit: any = request?.query.limit || 10;
+
+    // Controller Instance to excute method
+    const controller: UserController = new UserController();
+    // Obtain Response
+    const results: any = await controller.getKatas(page, limit, id);
+    // Send to the client the response
+    response.send(results);
+  });
+
 // Export Users Router
 export default userRouter;
 
