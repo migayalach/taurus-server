@@ -9,6 +9,8 @@ export interface IHelloController {
 export interface IUserController {
   // Real all Users from database || Get User By ID
   getUsers(page: number, limit: number, id?: string): Promise<any>;
+  // Get all Katas of a User
+  getKatas(page: number, limit: number, id: string): Promise<any>;
   // Delete User By ID
   deleteUser(id?: string): Promise<any>;
   // Update User
